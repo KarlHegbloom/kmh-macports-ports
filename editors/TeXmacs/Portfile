@@ -1,14 +1,18 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem 1.0
+PortGroup github 1.0
 PortGroup qt5 1.0
 PortGroup cmake 1.1
 
+github.setup    KarlHegbloom texmacs 1.99.9-20171115-kmh v
 name		TeXmacs
-conflicts	fig2ps
-version		1.99.9-1-guile-1.8.8-svn-10883-git-n10856-f7df3c808
+distname    texmacs-${version}
+
 revision	1
-distname	${distname}-src
+
+conflicts	fig2ps
+
 categories	editors
 maintainers	nomaintainer
 platforms	darwin
@@ -43,41 +47,41 @@ long_description	\
 #		function.
 
 homepage	http://www.texmacs.org/
-master_sites	https://github.com/KarlHegbloom/texmacs/archive/:source
 
-distfiles	TeXmacs-${version}-src${extract.suffix}:source
+fetch.type    git
+git.url    https://github.com/KarlHegbloom/texmacs.git
 
-checksums       TeXmacs-${version}-src${extract.suffix} \
-		md5     f596563ff26f01c46f8d883fe7a016e6 \
-		sha1    862f12b1c8fd1a8aca25330b0a20916e972e06a8 \
-		rmd160  41202796de7c14a9aa3a6c4480798683f612f8e6
+worksrcdir    ${distname}/src
 
-depends_lib	port:sqlite3    \
-        port:freetype       \
-        port:zlib           \
-        port:jpeg           \
-        port:libpng         \
-        port:imlib2         \
-		port:guile18		\
-		port:libiconv		\
-		port:libtool		\
-		port:texlive		\
-		port:xorg-libXext	\
-        port:qt5            
+# post-fetch {
+#     system -W ${worksrcpath} "git submodule update --init"
+# }
 
-depends_build port:pkgconfig \
-        port:cmake
+qt5.depends_component    qtmacextras
+
+# qtimageformats is for tiff...
+
+depends_lib    port:qt5 \
+    port:sqlite3        \
+    port:freetype       \
+    port:zlib           \
+    port:jpeg           \
+    port:libpng         \
+    port:imlib2         \
+    port:guile18		\
+    port:libiconv		\
+    port:libtool		\
+    port:texlive		\
+    port:xorg-libXext
 
 depends_run	bin:gs:ghostscript
 
-extract.only	TeXmacs-${version}-src${extract.suffix}
-
-post-destroot	{
-    file mkdir ${destroot}${prefix}/share/${name}
-    system "chown -R root:admin ${destroot}${prefix}/share/${name}"
-    file rename ${destroot}${prefix}/share/${name}/plugins/cadabra \
-        ${destroot}${prefix}/share/${name}/plugins/cadabra.texmacs
-}
+# post-destroot	{
+#     file mkdir ${destroot}${prefix}/share/${name}
+#     system "chown -R root:admin ${destroot}${prefix}/share/${name}"
+#     file rename ${destroot}${prefix}/share/${name}/plugins/cadabra \
+#         ${destroot}${prefix}/share/${name}/plugins/cadabra.texmacs
+# }
 
 post-activate {
     system "${prefix}/bin/update-mime-database ${prefix}/share/mime || true"
@@ -86,4 +90,3 @@ post-activate {
 post-deactivate {
     system "${prefix}/bin/update-mime-database ${prefix}/share/mime || true"
 }
-
