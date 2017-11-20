@@ -5,7 +5,7 @@ PortGroup github 1.0
 PortGroup qt5 1.0
 PortGroup cmake 1.1
 
-github.setup    KarlHegbloom texmacs 1.99.9-20171115-kmh v
+github.setup    KarlHegbloom texmacs 1.99.9-20171120-kmh v
 name		TeXmacs
 distname    texmacs-${version}
 
