@@ -1,57 +1,62 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
-PortSystem 1.0
-PortGroup github 1.0
-PortGroup qt5 1.0
-PortGroup cmake 1.1
+PortSystem    1.0
+PortGroup     github 1.0
+PortGroup     qt5 1.0
+PortGroup     cmake 1.1
 
 github.setup    KarlHegbloom texmacs 1.99.9-20171120-kmh v
-name		TeXmacs
-distname    texmacs-${version}
+name		    TeXmacs
+distname        texmacs-${version}
 
-revision	1
+revision    1
 
-conflicts	fig2ps
+conflicts    fig2ps
 
-categories	editors
-maintainers	nomaintainer
-platforms	darwin
+categories     editors
+maintainers    nomaintainer
+platforms      darwin
 
-description	GNU TeXmacs: A Scientific Text Editor
+description	    GNU TeXmacs: A Scientific Text Editor
 long_description	\
-		GNU TeXmacs is a free scientific text editor,		\
-		which was both inspired by TeX and GNU Emacs.		\
-		The editor allows you to write structured documents	\
-		via a wysiwyg (what-you-see-is-what-you-get) and	\
-		user friendly interface. New styles may be created by	\
-		the user. The program implements high-quality		\
-		typesetting algorithms and TeX fonts, which help you	\
-		to produce professionally looking documents.		\
+    GNU TeXmacs is a free scientific text editor,		\
+    which was both inspired by TeX and GNU Emacs.		\
+    The editor allows you to write structured documents	\
+    via a wysiwyg (what-you-see-is-what-you-get) and	\
+    user friendly interface. New styles may be created by	\
+    the user. The program implements high-quality		\
+    typesetting algorithms and TeX fonts, which help you	\
+    to produce professionally looking documents.		\
 									\
-		The high typesetting quality still goes through for	\
-		automatically generated formulas, which makes TeXmacs	\
-		suitable as an interface for computer algebra systems.	\
-		TeXmacs also supports the Guile/Scheme extension	\
-		language, so that you may customize the interface and	\
-		write your own extensions to the editor.
+    The high typesetting quality still goes through for	\
+    automatically generated formulas, which makes TeXmacs	\
+    suitable as an interface for computer algebra systems.	\
+    TeXmacs also supports the Guile/Scheme extension	\
+    language, so that you may customize the interface and	\
+    write your own extensions to the editor.
 
 #user_notes	If texmacs can't find guile's modules, you will have to \
-#		set GUILE_LOAD_PATH explicitly (usually			\
-#		${prefix}/share/guile/1.8).				\
-#									\
-#		Also, you may need to set DISPLAY to localhost:0.0 if	\
-#		launching TeXmacs from a non-X11 terminal.
+    #		set GUILE_LOAD_PATH explicitly (usually			\
+    #		${prefix}/share/guile/1.8).				\
+    #									\
+    #		Also, you may need to set DISPLAY to localhost:0.0 if	\
+    #		launching TeXmacs from a non-X11 terminal.
 
 #bugs		Some of the computer algebra system sessions (e.g.,	\
-#		maxima) will hang if you try to use the online help	\
-#		function.
+    #		maxima) will hang if you try to use the online help	\
+    #		function.
 
 homepage	http://www.texmacs.org/
 
 fetch.type    git
 git.url    https://github.com/KarlHegbloom/texmacs.git
+#git.url    file:///Users/Vagrant/Source/texmacs
 
-worksrcdir    ${distname}/src
+worksrcdir    ${distname}
+
+post-fetch {
+    worksrcdir ${distname}/src
+}
 
 # post-fetch {
 #     system -W ${worksrcpath} "git submodule update --init"
@@ -74,7 +79,7 @@ depends_lib    port:qt5 \
     port:texlive		\
     port:xorg-libXext
 
-depends_run	bin:gs:ghostscript
+depends_run    bin:gs:ghostscript
 
 # post-destroot	{
 #     file mkdir ${destroot}${prefix}/share/${name}
